@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <cmath>
 #include <math.h>
+#include <ctime>
+#include <iostream>
+
+using namespace std;
 
 //dinoStates -> left ,2legs,right,2legs
 int dino [4][15][15] ={
@@ -77,7 +81,7 @@ int dino [4][15][15] ={
     0,0,0,0,1,1,0,1,1,0,0,0,0,0,0
 }};
 
-int cactus[1][15][15]={
+int cactus[][15][15]={
     {
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -94,11 +98,28 @@ int cactus[1][15][15]={
         0,0,0,0,0,4,4,4,0,0,0,0,0,0,0,
         0,0,0,0,0,4,4,4,0,0,0,0,0,0,0,
         0,0,0,0,0,4,4,4,0,0,0,0,0,0,0
+    },
+    {
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,4,0,4,0,0,0,4,0,0,0,0,0,0,
+        4,0,4,0,4,0,4,0,4,0,4,0,0,0,0,
+        4,0,4,0,4,0,4,4,4,0,4,0,4,0,0,
+        4,0,4,0,4,0,4,0,0,0,4,0,4,0,0,
+        4,4,4,0,4,4,4,0,4,0,4,0,4,0,0,
+        0,4,0,0,0,0,4,0,4,0,4,4,4,0,0,
+        0,4,0,0,0,0,4,0,4,4,4,0,0,0,0,
+        0,4,0,0,0,0,4,0,0,0,4,0,0,0,0
     }
 };
 
 int pressSpace[][100] ={
-    0,0,6,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,6,6,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,6,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,6,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,6,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,6,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -124,25 +145,32 @@ void Play(){
     int dinoYPos = backgroundHeight -20;
     float dinoYPosFloat = dinoYPos;
     float dinoState = 1;
-    float changeRate = 0.05;
-    float cactusXPos = 160;
-    float cactusSpeed = 0.6 ;
+    float changeRate = 0.1;
+    float cactus1XPos = 160;
+    float cactusSpeed = 2 ;
+    float cactusAcceleration = 0.001;
     int pressSpaceXPos = 0;
     int pressSpaceYPos =0;
-    float initialJumpSpeed =1;
+    float initialJumpSpeed =2;
     float jumpSpeed = initialJumpSpeed;
-    float gravity = 0.02;
+    float gravity = 0.1;
+    float score = 0;
+    int cactusType = 0;
     bool isUp = false;
     bool isDown = false;
     bool isColliding = false;
     int dinoGroundYPos = dinoYPos;
     int isInput;
     char input;
-    char color[] ={' ','@','O','.','@','.','#'};
+    char color[][7] ={{' ','?','O','.','@','.','#'},{'@',' ','O',' ',' ',' ',' '}};
+    int colorMode = 0;
     int background[backgroundHeight][backgroundWidth];
 
-
+    long totalFrame = 0;
+    long shortFrame = 0;
+    long s = clock();
     for(;;){
+        long startFrame = clock();
         //reading input
         if(kbhit()){
             input = getchar(); 
@@ -178,7 +206,6 @@ void Play(){
                 isDown = false;
             }
             else{
-                printf("%d %f",dinoYPos,jumpSpeed);
                 dinoYPosFloat += jumpSpeed; 
                 dinoYPos = int(dinoYPosFloat);
                 jumpSpeed += gravity;
@@ -193,12 +220,12 @@ void Play(){
             }
         }
         
-        //placing cactus in the background
+        //placing cactus1 in the background
         for(int j=0;j<15;j++){
             for(int k=0;k<15;k++){
-                if(cactusXPos+k < backgroundWidth && cactusXPos+k >= 0 ){
-                    if (cactus[0][j][k] != 0){
-                        background[dinoGroundYPos+j][int(floor(cactusXPos))+k] = cactus[0][j][k];
+                if(cactus1XPos+k < backgroundWidth && cactus1XPos+k >= 0 ){
+                    if (cactus[cactusType][j][k] != 0){
+                        background[dinoGroundYPos+j][int(floor(cactus1XPos))+k] = cactus[cactusType][j][k];
                     }
                     
                 }
@@ -233,7 +260,7 @@ void Play(){
         }
 
         printf("\x1b[d");
-
+        
         //if it is beginning add sentence press space to play
         if(isBeginning){
             for(int i = 0 ;i<sizeof(pressSpace)/sizeof(pressSpace[0]);i++){
@@ -249,7 +276,7 @@ void Play(){
         for(int j = 0;j<backgroundHeight;j++){
             for(int k=0;k<backgroundWidth;k++){
                 //printf("%d",background[j][k]);
-                printf("%c",color[background[j][k]]);
+                printf("%c",color[colorMode][background[j][k]]);
             }
             printf("\n");
         }
@@ -266,11 +293,25 @@ void Play(){
             return;
         }
         
-        cactusXPos = cactusXPos-cactusSpeed,backgroundWidth;
-        if (cactusXPos <= 0){
-            cactusXPos = backgroundWidth;
+        cactus1XPos = cactus1XPos-cactusSpeed;
+        if (cactus1XPos <= 0){
+            cactus1XPos = backgroundWidth;
+            cactusType = rand()% (sizeof(cactus)/sizeof(cactus[0]));
         }
         dinoState = fmod(dinoState+changeRate,4);
+        score += cactusSpeed/5;
+        cactusSpeed += cactusAcceleration;
+        colorMode = int(score / 500) % 2;
+        printf("Score : %f\n",floor(score));
+        printf("%ld\n",totalFrame - shortFrame);
+        printf("%ld\n",shortFrame);
+        printf("%ld",clock() - startFrame);
+        totalFrame ++;
+
+        while(clock() - startFrame < 20000){
+
+            //just wait until frametime finish so we have fixed frame rate
+        }
     }
 }
 
