@@ -303,9 +303,6 @@ void Play(){
         cactusSpeed += cactusAcceleration;
         colorMode = int(score / 500) % 2;
         printf("Score : %f\n",floor(score));
-        printf("%ld\n",totalFrame - shortFrame);
-        printf("%ld\n",shortFrame);
-        printf("%ld",clock() - startFrame);
         totalFrame ++;
 
         while(clock() - startFrame < 20000){
